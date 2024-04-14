@@ -1,12 +1,12 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import UserSerializer,ContactUsSerializer,MentorSerializer
+from .serializers import *
 from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.response import Response
 from django.http import Http404
-from .models import Mentor,ContactUs,User
+from .models import *
 
 
 
@@ -50,6 +50,15 @@ class UserDetailView(APIView):
         user = self.get_object(pk)
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class LoginAPIView(APIView):
+    def post(self, request):
+        serializer = LoginSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.validated_data['user']
+            # Perform login logic here if needed
+            return Response({"message": "Login successful"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class MentorListView(generics.ListAPIView):
     queryset = Mentor.objects.all()
