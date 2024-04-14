@@ -4,6 +4,12 @@ from rest_framework import status
 from .models import User
 from .serializers import UserSerializer
 from django.shortcuts import render
+from rest_framework import generics
+from rest_framework.response import Response
+from rest_framework import status
+from django.http import Http404
+from .models import Mentor
+from .serializers import MentorSerializer
 
 
 
@@ -19,6 +25,8 @@ class UserListView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 class UserDetailView(APIView):
     def get_object(self, pk):
@@ -43,6 +51,39 @@ class UserDetailView(APIView):
     def delete(self, request, pk):
         user = self.get_object(pk)
         user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class MentorListView(generics.ListAPIView):
+    queryset = Mentor.objects.all()
+    serializer_class = MentorSerializer
+
+class MentorCreateView(generics.CreateAPIView):
+    queryset = Mentor.objects.all()
+    serializer_class = MentorSerializer
+
+class MentorDetailView(APIView):
+    def get_object(self, pk):
+        try:
+            return Mentor.objects.get(pk=pk)
+        except Mentor.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        mentor = self.get_object(pk)
+        serializer = MentorSerializer(mentor)
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        mentor = self.get_object(pk)
+        serializer = MentorSerializer(mentor, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        mentor = self.get_object(pk)
+        mentor.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 def index(request):
