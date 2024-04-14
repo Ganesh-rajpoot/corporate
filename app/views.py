@@ -1,15 +1,13 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import User
-from .serializers import UserSerializer
+from .serializers import UserSerializer,ContactUsSerializer,MentorSerializer
 from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.response import Response
-from rest_framework import status
 from django.http import Http404
-from .models import Mentor
-from .serializers import MentorSerializer
+from .models import Mentor,ContactUs,User
+
 
 
 
@@ -85,6 +83,17 @@ class MentorDetailView(APIView):
         mentor = self.get_object(pk)
         mentor.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class ContactUsCreateView(generics.CreateAPIView):
+    queryset = ContactUs.objects.all()
+    serializer_class = ContactUsSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 def index(request):
     return render(request, 'app/index.html')

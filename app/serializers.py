@@ -1,4 +1,4 @@
-from .models import User,Mentor
+from .models import User,Mentor,ContactUs
 from rest_framework import serializers
 
 class UserSerializer(serializers.ModelSerializer):
@@ -21,3 +21,8 @@ class MentorSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data.pop('confirm_password')
         return Mentor.objects.create(**validated_data)
+
+class ContactUsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContactUs
+        fields = ['name', 'mobile', 'email', 'message']

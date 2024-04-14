@@ -28,4 +28,13 @@ class Mentor(models.Model):
 
     def save(self, *args, **kwargs):
         self.updated_at = timezone.now()
-        return super(Mentor, self).save(*args, **kwargs)      
+        return super(Mentor, self).save(*args, **kwargs)  
+
+class ContactUs(models.Model):
+    name = models.CharField(max_length=150)
+    mobile = models.CharField(max_length=15)
+    email = models.EmailField()
+    message = models.TextField()
+
+    def __str__(self):
+        return self.name    
