@@ -30,6 +30,7 @@ class Mentor(models.Model):
         self.updated_at = timezone.now()
         return super(Mentor, self).save(*args, **kwargs)  
 
+'''This model class for contact us '''
 class ContactUs(models.Model):
     name = models.CharField(max_length=150)
     mobile = models.CharField(max_length=15)
@@ -38,3 +39,25 @@ class ContactUs(models.Model):
 
     def __str__(self):
         return self.name    
+
+'''This model class for Blog post '''
+class BlogPost(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+
+class Job(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    company_name = models.CharField(max_length=255)
+    location = models.CharField(max_length=100)
+    salary = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    posted_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title

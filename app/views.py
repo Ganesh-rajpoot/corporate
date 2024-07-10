@@ -7,6 +7,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from django.http import Http404
 from .models import *
+from rest_framework import viewsets
 
 
 
@@ -103,6 +104,14 @@ class ContactUsCreateView(generics.CreateAPIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class BlogPostViewSet(viewsets.ModelViewSet):
+    queryset = BlogPost.objects.all()
+    serializer_class = BlogPostSerializer
+
+class JobViewSet(viewsets.ModelViewSet):
+    queryset = Job.objects.all()
+    serializer_class = JobSerializer
 
 def index(request):
     return render(request, 'app/index.html')

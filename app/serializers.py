@@ -1,4 +1,4 @@
-from .models import User,Mentor,ContactUs
+from .models import *
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 
@@ -45,3 +45,13 @@ class ContactUsSerializer(serializers.ModelSerializer):
     class Meta:
         model = ContactUs
         fields = ['name', 'mobile', 'email', 'message']
+
+class BlogPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BlogPost
+        fields = '__all__'
+
+class JobSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Job
+        fields = '__all__'
